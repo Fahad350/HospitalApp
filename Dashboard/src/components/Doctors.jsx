@@ -1,23 +1,22 @@
-import React, { useContext, useEffect, useState } from "react";
-import { Context } from "../context/AuthContext";
 import axios from "axios";
+import React, { useContext, useEffect, useState } from "react";
 import { toast } from "react-toastify";
+import { Context } from "../main";
 import { Navigate } from "react-router-dom";
 
-function Doctors() {
+const Doctors = () => {
   const [doctors, setDoctors] = useState([]);
   const { isAuthenticated } = useContext(Context);
-
   useEffect(() => {
     const fetchDoctors = async () => {
       try {
         const { data } = await axios.get(
-          "http://localhost:4000/api/v1/user/doctors",
+          "http://localhost:5000/api/v1/user/doctors",
           { withCredentials: true }
         );
         setDoctors(data.doctors);
       } catch (error) {
-        toast.error(error.response?.data?.message || "Failed to fetch doctors");
+        toast.error(error.response?.data?.message || "Something went wrong");
       }
     };
     fetchDoctors();
@@ -26,66 +25,48 @@ function Doctors() {
   if (!isAuthenticated) {
     return <Navigate to={"/login"} />;
   }
-
   return (
-    <div>
-      {/* Page Title */}
-      <h1 className="text-3xl font-bold mb-8">Doctors</h1>
-
-      {doctors && doctors.length > 0 ? (
-        <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
-          {doctors.map((element) => (
-            <div
-              key={element._id}
-              className="bg-white rounded-2xl shadow-md hover:shadow-xl transition duration-300 overflow-hidden"
-            >
-              {/* Avatar */}
-              <img
-                src={element.docAvator?.url || "/default-avatar.png"}
-                alt="doctor avatar"
-                className="w-full h-48 object-cover"
-              />
-
-              {/* Info */}
-              <div className="p-4">
-                <h4 className="text-lg font-semibold text-gray-800 mb-2 text-center">
-                  {`${element.firstName} ${element.lastName}`}
-                </h4>
-
-                <div className="text-sm text-gray-600 space-y-1">
+    <section className="page doctors ">
+      <h1 className="text-center">DOCTORS</h1>
+      <div className="banner">
+        {doctors && doctors.length > 0 ? (
+          doctors.map((element) => {
+            return (
+              <div className="card text-black">
+                <img
+                  src={element.docAvator && element.docAvator.url}
+                  alt="doctor avatar"
+                />
+                <h4>{`${element.firstName} ${element.lastName}`}</h4>
+                <div className="details">
                   <p>
-                    <span className="font-medium">Email:</span> {element.email}
+                    Email: <span>{element.email}</span>
                   </p>
                   <p>
-                    <span className="font-medium">Phone:</span> {element.phone}
+                    Phone: <span>{element.phone}</span>
                   </p>
                   <p>
-                    <span className="font-medium">CNIC:</span> {element.cnic}
+                    DOB: <span>{element.dob.substring(0, 10)}</span>
                   </p>
                   <p>
-                    <span className="font-medium">Department:</span>{" "}
-                    {element.doctorDept}
+                    Department: <span>{element.doctorDept}</span>
                   </p>
                   <p>
-                    <span className="font-medium">Dob:</span>{" "}
-                    {element.dob.substring(0, 10)}
+                    CNIC: <span>{element.cnic}</span>
                   </p>
                   <p>
-                    <span className="font-medium">Gender:</span>{" "}
-                    {element.gender}
+                    Gender: <span>{element.gender}</span>
                   </p>
                 </div>
               </div>
-            </div>
-          ))}
-        </div>
-      ) : (
-        <h2 className="text-center text-xl text-gray-600 font-medium">
-          No Doctors Found!
-        </h2>
-      )}
-    </div>
+            );
+          })
+        ) : (
+          <h1>No Registered Doctors Found!</h1>
+        )}
+      </div>
+    </section>
   );
-}
+};
 
 export default Doctors;

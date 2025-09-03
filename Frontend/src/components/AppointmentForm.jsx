@@ -22,22 +22,22 @@ function AppointmentForm() {
   const [address, setAddress] = useState("");
 
   const departmentsArray = [
+    "Pediatrics",
+    "Orthopedics",
     "Cardiology",
     "Neurology",
-    "Radiology",
-    "Dermatology",
-    "Physiotherapy",
-    "ENT",
     "Oncology",
-    "Orthopedics",
-    "Pediatrics",
+    "Radiology",
+    "Physical Therapy",
+    "Dermatology",
+    "ENT",
   ];
 
   const [doctors, setDoctors] = useState([]);
   useEffect(() => {
     const fetchDoctor = async () => {
       const { data } = await axios.get(
-        "http://localhost:4000/api/v1/user/doctors",
+        "http://localhost:5000/api/v1/user/doctors",
         {
           withCredentials: true,
         }
@@ -52,7 +52,7 @@ function AppointmentForm() {
     try {
       const hasVisitedBool = Boolean(hasVisited);
       const { data } = await axios.post(
-        "http://localhost:4000/api/v1/appointment/takeAppointment",
+        "http://localhost:5000/api/v1/appointment/takeAppointment",
         {
           firstName,
           lastName,

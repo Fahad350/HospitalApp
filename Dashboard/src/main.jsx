@@ -1,16 +1,24 @@
-import React from "react";
+import React, { createContext, useState } from "react";
 import ReactDOM from "react-dom/client";
-import { BrowserRouter } from "react-router-dom";
-import App from "./App";
+import App from "./App.jsx";
 
-import { AuthProvider } from "./context/AuthContext";
+export const Context = createContext({ isAuthenticated: false });
+
+const AppWrapper = () => {
+  const [isAuthenticated, setIsAuthenticated] = useState(false);
+  const [admin, setAdmin] = useState({});
+
+  return (
+    <Context.Provider
+      value={{ isAuthenticated, setIsAuthenticated, admin, setAdmin }}
+    >
+      <App />
+    </Context.Provider>
+  );
+};
 
 ReactDOM.createRoot(document.getElementById("root")).render(
   <React.StrictMode>
-    <AuthProvider>
-      <BrowserRouter>
-        <App />
-      </BrowserRouter>
-    </AuthProvider>
+    <AppWrapper />
   </React.StrictMode>
 );

@@ -22,7 +22,7 @@ function Register() {
     e.preventDefault();
     try {
       const res = await axios.post(
-        "http://localhost:4000/api/v1/user/patient/register",
+        "http://localhost:5000/api/v1/user/patient/register",
         {
           firstName,
           lastName,

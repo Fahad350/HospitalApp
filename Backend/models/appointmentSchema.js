@@ -15,7 +15,7 @@ const appointmentSchema = mongoose.Schema({
   email: {
     type: String,
     required: true,
-    unique: true,
+
     validate: [validator.isEmail, "Please Provide Valid Email"],
   },
   phone: {
@@ -49,15 +49,10 @@ const appointmentSchema = mongoose.Schema({
     required: true,
   },
   doctor: {
-    doctor_firstName: {
-      type: String,
-      required: true,
-    },
-    doctor_lastName: {
-      type: String,
-      required: true,
-    },
+    firstName: { type: String, required: true },
+    lastName: { type: String, required: true },
   },
+
   hasVisited: {
     type: Boolean,
     default: false,
@@ -77,8 +72,8 @@ const appointmentSchema = mongoose.Schema({
   status: {
     type: String,
     required: true,
-    enum: ["pending", "confirmed", "cancelled"],
-    default: "pending",
+    enum: ["Pending", "Accepted", "Rejected"],
+    default: "Pending",
   },
 });
 

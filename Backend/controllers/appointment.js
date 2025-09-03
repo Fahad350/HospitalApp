@@ -31,7 +31,6 @@ export const getAppointment = catchAsyncErrors(async (req, res, next) => {
     !department ||
     !doctor_firstName ||
     !doctor_lastName ||
-    !hasVisited ||
     !address
   ) {
     return next(new ErrorHandler("Please Fill All Required Fields!", 400));
@@ -40,7 +39,7 @@ export const getAppointment = catchAsyncErrors(async (req, res, next) => {
     firstName: doctor_firstName,
     lastName: doctor_lastName,
     role: "Doctor",
-    doctorDepartment: department,
+    doctorDept: department,
   });
   if (isNameConflict.length === 0) {
     return next(new ErrorHandler("Doctor not found", 404));
@@ -70,7 +69,7 @@ export const getAppointment = catchAsyncErrors(async (req, res, next) => {
     hasVisited,
     address,
     doctorId,
-    PatientId,
+    PatientId: req.user ? req.user._id : null, // avoid crash if not logged in
   });
   res.status(200).json({
     success: true,
@@ -88,7 +87,7 @@ export const getAllAppointments = catchAsyncErrors(async (req, res, next) => {
 
 export const updateAppointmentStatus = catchAsyncErrors(
   async (req, res, next) => {
-    const { id } = req.params.id;
+    const { id } = req.params;
     let appointment = await Appointment.findById(id);
     if (!appointment) {
       return next(new ErrorHandler("Appointment not found", 404));
