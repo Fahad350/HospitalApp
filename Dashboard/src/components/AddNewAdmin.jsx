@@ -114,7 +114,9 @@ const AddNewAdmin = () => {
             />
           </div>
           <div style={{ justifyContent: "center", alignItems: "center" }}>
-            <button type="submit">ADD NEW ADMIN</button>
+            <button type="submit" className="cursor-pointer">
+              Register New Admin
+            </button>
           </div>
         </form>
       </section>

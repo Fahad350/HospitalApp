@@ -8,6 +8,23 @@ import { AiFillCloseCircle } from "react-icons/ai";
 
 const Dashboard = () => {
   const [appointments, setAppointments] = useState([]);
+  const [doctors, setDoctors] = useState([]);
+
+  useEffect(() => {
+    const fetchDoctors = async () => {
+      try {
+        const { data } = await axios.get(
+          "http://localhost:5000/api/v1/user/doctors",
+          { withCredentials: true }
+        );
+        setDoctors(data.doctors); // adjust key if backend returns differently
+      } catch (error) {
+        setDoctors([]);
+      }
+    };
+
+    fetchDoctors();
+  }, []);
 
   useEffect(() => {
     const fetchAppointments = async () => {
@@ -73,7 +90,7 @@ const Dashboard = () => {
           </div>
           <div className="thirdBox">
             <p>Registered Doctors</p>
-            <h3>10</h3>
+            <h3>{doctors.length}</h3>
           </div>
         </div>
         <div className="banner">
